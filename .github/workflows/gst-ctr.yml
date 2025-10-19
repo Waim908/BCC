@@ -1,4 +1,4 @@
-name: Gstreamer Base Build Contaienr Ubuntu ARM64
+name: Gstreamer Base Build Contaienr Debian ARM64
 
 permissions:
   contents: write
@@ -8,11 +8,11 @@ on:
   workflow_dispatch:
 
 env:
-  ubuntuVersionName: questing
+  debianVersion: questing
 
 jobs:
-  ubuntu:
-    runs-on: ubuntu-24.04-arm
+  debian:
+    runs-on: debian-24.04-arm
     steps:
       - name: Clone repo
         uses: actions/checkout@v5
@@ -20,22 +20,24 @@ jobs:
       - name: Setting chroot
         run: |
           sudo apt update
-          sudo apt install debootstrap -y
-          if ! sudo debootstrap --variant=minbase --arch=arm64 ${ubuntuVersionName} /tmp/ubuntu http://archive.ubuntu.com/ubuntu; then
-            echo "基础ubuntu容器创建失败！"
+          install -m 755 arch-bootstrap.sh /usr/local/bin/arch-bootstrap
+          # sudo apt install debootstrap -y
+          cd /tmp
+          if ! arch-bootstrap -a aarch64 archlinux ; then
+            echo "基础容器创建失败！"
             exit 1
           fi
           chmod +x Gst-bcc.sh
-          cp Gst-bcc.sh /tmp/ubuntu/
-          if ! sudo chroot /tmp/ubuntu /Gst-bcc.sh ${ubuntuVersionName}; then
+          cp Gst-bcc.sh /tmp/archlinux
+          if ! sudo chroot /tmp/archlinux /Gst-bcc.sh ${debianVersion}; then
             echo "chroot容器脚本运行失败"
           fi
 
       - name: Package
         run: |
-          rm -rf /tmp/ubuntu/Gst-bcc.sh
+          rm -rf /tmp/archlinux/Gst-bcc.sh
           cd /tmp
-          tar -I 'xz -T8' -cvf /tmp/gst-ubuntu-bcc.tar.xz ubuntu/
+          tar -I 'xz -T8' -cvf /tmp/gst-arch-bcc.tar.xz archlinux/
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -43,10 +45,9 @@ jobs:
           name: gstreamer-base-chroot-ctr
           draft: false
           prerelease: false
-          tag_name: gst-bcc-${{ env.ubuntuVersionName }}}
-          body: |
-            OS: Ubuntu ${{ env.ubuntuVersionName }}
+          tag_name: gst-bcc-${{ env.debianVersion }}}
+          body: Gstreamer BCC
 
-          files: /tmp/gst-ubuntu-bcc.tar.xz
+          files: /tmp/gst-arch-bcc.tar.xz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
