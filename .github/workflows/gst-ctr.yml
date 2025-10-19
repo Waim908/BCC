@@ -37,7 +37,7 @@ jobs:
           cd /tmp
           bash mount.sh mount archlinux
           chmod 777 Gst-bcc.sh
-          cp Gst-bcc archlinux/bin/
+          cp Gst-bcc.sh archlinux/bin/
           sudo chroot archlinux Gst-bcc.sh
           cd /tmp
           bash mount.sh unmount archlinux
