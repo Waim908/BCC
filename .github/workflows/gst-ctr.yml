@@ -27,27 +27,4 @@ jobs:
             echo "基础容器创建失败！"
             exit 1
           fi
-          chmod +x Gst-bcc.sh
-          cp Gst-bcc.sh /tmp/archlinux
-          if ! sudo chroot /tmp/archlinux /Gst-bcc.sh ${debianVersion}; then
-            echo "chroot容器脚本运行失败"
-          fi
-
-      - name: Package
-        run: |
-          rm -rf /tmp/archlinux/Gst-bcc.sh
-          cd /tmp
-          tar -I 'xz -T8' -cvf /tmp/gst-arch-bcc.tar.xz archlinux/
-
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: gstreamer-base-chroot-ctr
-          draft: false
-          prerelease: false
-          tag_name: gst-bcc-${{ env.debianVersion }}}
-          body: Gstreamer BCC
-
-          files: /tmp/gst-arch-bcc.tar.xz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          chroot archlinux cat /etc/os-release
