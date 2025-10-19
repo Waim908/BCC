@@ -25,6 +25,8 @@ jobs:
           # sudo apt update
           install -m 755 arch-bootstrap.sh /usr/local/bin/arch-bootstrap
           # sudo apt install debootstrap -y
+          cp Gst-bcc.sh /tmp
+          cp mount.sh /tmp
           cd /tmp
           if ! sudo arch-bootstrap -a aarch64 archlinux ; then
             echo "基础容器创建失败！"
