@@ -27,4 +27,4 @@ jobs:
             echo "基础容器创建失败！"
             exit 1
           fi
-          sudo chroot archlinux cat /etc/os-release
+          sudo chroot archlinux echo 1
