@@ -7,9 +7,9 @@ case $1 in
     sudo mount --bind /dev/pts $2/dev/pts
   ;;
   unmount)
-    sudo unmount $2/dev
-    sudo unmount $2/sys
-    sudo unmount $2/dev
-    sudo unmount $2/dev/pts
+    sudo umount $2/dev
+    sudo umount $2/sys
+    sudo umount $2/dev
+    sudo umount $2/dev/pts
   ;;
 esac
