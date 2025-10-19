@@ -1,4 +1,4 @@
-name: Gstreamer Base Build Contaienr Debian ARM64
+name: Gstreamer Base Build Contaienr ARM64
 
 permissions:
   contents: write
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  debian:
+  archlinux:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Clone repo
