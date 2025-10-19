@@ -45,7 +45,7 @@ jobs:
       - name: Package
         run: |
           cd /tmp
-          sudo tar -I 'xz -T$(nproc)' -cf gst-bcc.tar.xz archlinux
+          sudo tar -I 'xz -T$(nproc)' -cvf gst-bcc.tar.xz archlinux
 
       - name: Release
         uses: softprops/action-gh-release@v2
