@@ -1,3 +1,20 @@
 #!/bin/bash
-echo $1
-echo TEST
+# Chroot Container IS default root user
+allPkg=(
+  base-devel
+  ninja
+  meson
+  git
+  glib2-devel
+  libx11
+  mesa
+  libpulse
+  vulkan-devel
+  nasm
+  yasm
+  glslang
+)
+pacman -Syu --noconfirm
+pacman-key --init
+pacman -S --noconfirm ${allPkg[@]}
+exit 0
