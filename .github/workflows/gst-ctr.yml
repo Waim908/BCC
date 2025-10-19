@@ -7,15 +7,18 @@ permissions:
 on:
   workflow_dispatch:
 
-env:
-  debianVersion: questing
-
 jobs:
   debian:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Clone repo
         uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            arch-bootstrap.sh
+            Gst-bcc.sh
+            mount.sh
+
 
       - name: Setting chroot
         run: |
