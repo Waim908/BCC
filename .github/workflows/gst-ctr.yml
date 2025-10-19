@@ -1,0 +1,52 @@
+name: Gstreamer Base Build Contaienr Ubuntu ARM64
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  workflow_dispatch:
+
+env:
+  ubuntuVersionName: questing
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v5
+
+      - name: Setting chroot
+        run: |
+          sudo apt update
+          sudo apt install debootstrap -y
+          if ! debootstrap --variant=minbase --arch=arm64 ${ubuntuVersionName} /tmp/ubuntu http://archive.ubuntu.com/ubuntu; then
+            echo "基础ubuntu容器创建失败！"
+            exit 1
+          fi
+          chmod +x Gst-bcc.sh
+          cp Gst-bcc.sh /tmp/ubuntu/
+          if ! chroot /tmp/ubuntu /Gst-bcc.sh ${ubuntuVersionName}; then
+            echo "chroot容器脚本运行失败"
+          fi
+
+      - name: Package
+        run: |
+          rm -rf /tmp/ubuntu/Gst-bcc.sh
+          cd /tmp
+          tar -I 'xz -T8' -cvf /tmp/gst-ubuntu-bcc.tar.xz ubuntu/
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: gstreamer-base-chroot-ctr
+          draft: false
+          prerelease: false
+          tag_name: gst-bcc-${{ env.ubuntuVersionName }}}
+          body: |
+            OS: Ubuntu ${{ env.ubuntuVersionName }}
+
+          files: /tmp/gst-ubuntu-bcc.tar.xz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
