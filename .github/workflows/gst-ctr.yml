@@ -19,7 +19,7 @@ jobs:
 
       - name: Setting chroot
         run: |
-          sudo apt update
+          # sudo apt update
           install -m 755 arch-bootstrap.sh /usr/local/bin/arch-bootstrap
           # sudo apt install debootstrap -y
           cd /tmp
@@ -27,4 +27,4 @@ jobs:
             echo "基础容器创建失败！"
             exit 1
           fi
-          chroot archlinux cat /etc/os-release
+          sudo chroot archlinux cat /etc/os-release
