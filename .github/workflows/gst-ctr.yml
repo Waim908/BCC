@@ -37,7 +37,7 @@ jobs:
           cd /tmp
           bash mount.sh mount archlinux
           chmod 777 Gst-bcc.sh
-          cp Gst-bcc.sh archlinux/bin/
+          sudo cp Gst-bcc.sh archlinux/bin/
           sudo chroot archlinux Gst-bcc.sh
           cd /tmp
           bash mount.sh unmount archlinux
@@ -45,7 +45,7 @@ jobs:
       - name: Package
         run: |
           cd /tmp
-          tar -I 'xz -T$(nproc)' -cf gst-bcc.tar.xz archlinux
+          sudo tar -I 'xz -T$(nproc)' -cf gst-bcc.tar.xz archlinux
 
       - name: Release
         uses: softprops/action-gh-release@v2
