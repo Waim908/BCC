@@ -25,7 +25,7 @@ jobs:
           cd /tmp
           git clone https://github.com/Waim908/BCC BCC
           # sudo apt update
-          install -m 755 arch-bootstrap.sh /usr/local/bin/arch-bootstrap
+          install -m 755 /tmp/BCC/arch-bootstrap.sh /usr/local/bin/arch-bootstrap
           # sudo apt install debootstrap -y
           cp /tmp/BCC/Gst-bcc.sh /tmp
           cp /tmp/BCC/mount.sh /tmp
