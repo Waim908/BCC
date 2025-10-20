@@ -15,6 +15,7 @@ allPkg=(
   glslang
   cmake
   patchelf
+  libde265
 )
 pacman -Syu --noconfirm
 pacman-key --init
