@@ -13,6 +13,7 @@ allPkg=(
   nasm
   yasm
   glslang
+  cmake
 )
 pacman -Syu --noconfirm
 pacman-key --init
