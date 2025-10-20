@@ -14,6 +14,7 @@ allPkg=(
   yasm
   glslang
   cmake
+  patchelf
 )
 pacman -Syu --noconfirm
 pacman-key --init
