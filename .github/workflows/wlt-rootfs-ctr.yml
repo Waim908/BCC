@@ -1,4 +1,4 @@
-name: Gstreamer Base Build Contaienr ARM64
+name: Winlator Rootfs Base Build Contaienr ARM64
 
 permissions:
   contents: write
@@ -50,7 +50,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Gstreamer BCC
+          name: Winlator BCC
           draft: false
           prerelease: false
           tag_name: wlt-bcc-latest
