@@ -1,6 +1,16 @@
 #!/bin/bash
+##################################
+# Winlator Base Chroot Container #
+##################################
 # Chroot Container IS default root user
+# libde265
+#  nasm
+#  yasm
 allPkg=(
+  curl
+  wget
+  zstd
+
   base-devel
   ninja
   meson
@@ -10,14 +20,13 @@ allPkg=(
   mesa
   libpulse
   vulkan-devel
-  nasm
-  yasm
+
   glslang
   cmake
   patchelf
-  libde265
+
 )
 pacman -Syu --noconfirm
 pacman-key --init
-pacman -S --noconfirm --needed ${allPkg[@]}
+pacman -S --needed --noconfirm ${allPkg[@]}
 exit 0

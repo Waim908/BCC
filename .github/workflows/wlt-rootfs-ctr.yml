@@ -1,0 +1,61 @@
+name: Gstreamer Base Build Contaienr ARM64
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  workflow_dispatch:
+
+jobs:
+  archlinux:
+    runs-on: ubuntu-24.04-arm
+    steps:
+    #   - name: Clone repo
+    #     uses: actions/checkout@v5
+    #     with:
+    #       sparse-checkout: |
+    #         arch-bootstrap.sh
+    #         Wlt-bcc.sh
+    #         mount.sh
+
+
+      - name: Setting chroot
+        run: |
+          cd /tmp
+          git clone https://github.com/Waim908/BCC BCC
+          # sudo apt update
+          install -m 755 /tmp/BCC/arch-bootstrap.sh /usr/local/bin/arch-bootstrap
+          # sudo apt install debootstrap -y
+          cp /tmp/BCC/Wlt-bcc.sh /tmp
+          cp /tmp/BCC/mount.sh /tmp
+          cd /tmp
+          if ! sudo arch-bootstrap -a aarch64 archlinux ; then
+            echo "基础容器创建失败！"
+            exit 1
+          fi
+          cd /tmp
+          bash mount.sh mount archlinux
+          chmod 777 Wlt-bcc.sh
+          sudo cp Wlt-bcc.sh archlinux/bin/
+          sudo chroot archlinux /bin/Wlt-bcc.sh &&
+          cd /tmp
+          bash mount.sh unmount archlinux
+
+      - name: Package
+        run: |
+          cd /tmp
+          sudo tar -I 'xz -T$(nproc)' -cvf wlt-bcc.tar.xz archlinux
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Gstreamer BCC
+          draft: false
+          prerelease: false
+          tag_name: wlt-bcc-latest
+          body: |
+            winlator rootfs BCC
+          files: /tmp/wlt-bcc.tar.xz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
