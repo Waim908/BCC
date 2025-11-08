@@ -20,11 +20,11 @@ allPkg=(
   mesa
   libpulse
   vulkan-devel
+  libdrm
 
   glslang
   cmake
   patchelf
-
 )
 pacman -Syu --noconfirm
 pacman-key --init
