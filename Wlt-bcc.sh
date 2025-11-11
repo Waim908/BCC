@@ -22,6 +22,8 @@ allPkg=(
   vulkan-devel
   libdrm
 
+  python-pip
+
   glslang
   cmake
   patchelf
