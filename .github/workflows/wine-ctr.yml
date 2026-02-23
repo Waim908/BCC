@@ -14,6 +14,10 @@ jobs:
   archlinux:
     runs-on: ubuntu-24.04
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Update README wine latest update date
         run: |
@@ -21,9 +25,6 @@ jobs:
 
           # 下载 README 中的 Archlinux Rootfs
           wget -O archlinux-latest.tar.xz https://github.com/Waim908/BCC/releases/download/archlinux-latest/archlinux-latest.tar.xz
-
-          # 解包为 archlinux 目录
-          mkdir archlinux
           sudo tar --strip-components=1 -xf archlinux-latest.tar.xz -C /tmp
 
           DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
