@@ -24,7 +24,7 @@ jobs:
 
           # 解包为 archlinux 目录
           mkdir archlinux
-          sudo tar --strip-components=1 -xf archlinux-latest.tar.xz -C archlinux
+          sudo tar --strip-components=1 -xf archlinux-latest.tar.xz -C /tmp
 
           DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
           git clone https://github.com/Waim908/BCC BCC
