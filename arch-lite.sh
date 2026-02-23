@@ -4,7 +4,7 @@ rootfsURL="${ROOTFS_URL:-https://mirror.adectra.com/archlinux/iso/2026.02.01/arc
 wget -O rootfs.tar.zst "$rootfsURL"
 rootfsPath="$GITHUB_WORKSPACE/archlinux"
 mkdir "$rootfsPath"
-sudo tar --strip-components=1 -xf rootfs.tar.zst -C "$rootfsPath"
+sudo tar --strip-components=1 -xf rootfs.tar.zst -C "$rootfsPath" && rm -rf rootfs.tar.zst
 
 sudo cp -r /etc/hostname "$rootfsPath/etc/hostname"
 sudo cp -r /etc/hosts "$rootfsPath/etc/hosts"
@@ -28,7 +28,13 @@ bash mount.sh mount "$rootfsPath"
 # 在 chroot 内更新系统
 sudo chroot "$rootfsPath" /bin/pacman -Syu --noconfirm || exit 1
 
+# 再次进入 chroot 清理 pacman 缓存，回收空间（失败不致命）
+sudo chroot "$rootfsPath" /bin/pacman -Scc --noconfirm || true
+
 # 退出后卸载
 bash mount.sh unmount "$rootfsPath"
 
-sudo tar -I "xz -T$(nproc)" -cf /tmp/archlinux-latest.tar.xz archlinux || exit 1
+# 打包前清理 rootfs 内的缓存，减小体积
+sudo rm -rf "$rootfsPath/var/cache/pacman/pkg" "$rootfsPath/var/lib/pacman/sync"
+
+sudo tar -I "xz -T$(nproc) -9" -cf /tmp/archlinux-latest.tar.xz archlinux || exit 1
