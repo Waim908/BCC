@@ -25,8 +25,11 @@ sudo tee "$rootfsPath/etc/pacman.d/mirrorlist" < mirrorlist >/dev/null
 # 挂载必要的虚拟文件系统
 bash mount.sh mount "$rootfsPath"
 
-# 调整 pacman 配置，关闭 CheckSpace，避免 GitHub Actions 上磁盘检查报错
+# 按照 arch-bootstrap.sh 的 configure_minimal_system 调整 pacman 配置，
+# 关闭 DownloadUser、CheckSpace 和签名校验，适配 CI 环境
+sudo sed -i 's/^DownloadUser/#DownloadUser/' "$rootfsPath/etc/pacman.conf" || true
 sudo sed -i "s/^[[:space:]]*\\(CheckSpace\\)/# \\1/" "$rootfsPath/etc/pacman.conf" || true
+sudo sed -i "s/^[[:space:]]*SigLevel[[:space:]]*=.*$/SigLevel = Never/" "$rootfsPath/etc/pacman.conf" || true
 
 # 在 chroot 内更新系统
 sudo chroot "$rootfsPath" /bin/pacman -Syu --noconfirm || exit 1
