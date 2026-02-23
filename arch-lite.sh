@@ -11,15 +11,17 @@ sudo cp -r /etc/hostname "$rootfsPath/etc/hostname"
 sudo cp -r /etc/hosts "$rootfsPath/etc/hosts"
 sudo cp -r /etc/nsswitch.conf "$rootfsPath/etc/nsswitch.conf"
 
-sudo cat BCC/mirrorlist > "$rootfsPath/etc/pacman.d/mirrorlist"
+# 写入 pacman 镜像源列表
+sudo mkdir -p "$rootfsPath/etc/pacman.d"
+sudo tee "$rootfsPath/etc/pacman.d/mirrorlist" < mirrorlist >/dev/null
 
 # 挂载必要的虚拟文件系统
-bash BCC/mount.sh mount "$rootfsPath"
+bash mount.sh mount "$rootfsPath"
 
 # 在 chroot 内更新系统
 sudo chroot "$rootfsPath" /bin/pacman -Syu --noconfirm || exit 1
 
 # 退出后卸载
-bash BCC/mount.sh unmount "$rootfsPath"
+bash mount.sh unmount "$rootfsPath"
 
 sudo tar -I "xz -T$(nproc)" -cf /tmp/archlinux-latest.tar.xz archlinux || exit 1
