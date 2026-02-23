@@ -19,8 +19,11 @@ jobs:
         run: |
           TZ=Asia/Shanghai
           DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
-          sed -i "s/^- Wine x86-64 BCC Latest Update:.*/- Wine x86-64 BCC Latest Update: ${DATE_STR}/" README.md
           git clone https://github.com/Waim908/BCC BCC
+          sed -i "s/^- Wine x86-64 BCC Latest Update:.*/- Wine x86-64 BCC Latest Update: ${DATE_STR}/" BCC/README.md
+
+          sudo cp BCC/Wine_x86-64-bcc.sh /tmp/archlinux/bin/
+          sudo cp BCC/mount.sh /tmp/
 
           # 下载 README 中的 Archlinux Rootfs
           wget -O archlinux-latest.tar.xz https://github.com/Waim908/BCC/releases/download/archlinux-latest/archlinux-latest.tar.xz
@@ -35,7 +38,6 @@ jobs:
           cd /tmp
           bash mount.sh mount archlinux
           chmod 777 Wine_x86-64-bcc.sh
-          sudo cp Wine_x86-64-bcc.sh archlinux/bin/
           sudo chroot archlinux /bin/Wine_x86-64-bcc.sh &&
           cd /tmp
           bash mount.sh unmount archlinux
