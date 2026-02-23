@@ -1,0 +1,60 @@
+name: Gstreamer Base Build Contaienr ARM64
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      rootfs_url:
+        description: "自定义 Arch Linux bootstrap URL（可留空使用默认）"
+        required: false
+        default: ""
+  schedule:
+    # 北京时间每周一 00:00，对应 UTC 周日 16:00
+    - cron: "0 16 * * 0"
+
+jobs:
+  archlinux:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update README latest update date
+        run: |
+          TZ=Asia/Shanghai
+          DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
+          sed -i "s/^-\ Latest Update:.*/- Latest Update: ${DATE_STR}/" README.md
+
+      - name: Setting chroot
+        env:
+          ROOTFS_URL: ${{ github.event.inputs.rootfs_url }}
+        run: |
+          bash -x arch-lite.sh ${{ env.ROOTFS_URL }} || exit 1
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Arch Linux
+          draft: false
+          prerelease: false
+          tag_name: archlinux-latest
+          body: |
+            Arch Linux
+          files: /tmp/archlinux-latest.tar.xz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit README latest update date
+        if: success()
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -am "chore: update Archlinux latest date"
+            git push
+          fi
