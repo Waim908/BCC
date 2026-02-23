@@ -12,8 +12,8 @@ on:
         required: false
         default: ""
   schedule:
-    # 北京时间每周一 00:00，对应 UTC 周日 16:00
-    - cron: "0 16 * * 0"
+    # 北京时间每周日 00:00，对应 UTC 周六 16:00
+    - cron: "0 16 * * 6"
 
 jobs:
   archlinux:
