@@ -25,7 +25,7 @@ jobs:
 
           # 下载 README 中的 Archlinux Rootfs
           wget -O archlinux-latest.tar.xz https://github.com/Waim908/BCC/releases/download/archlinux-latest/archlinux-latest.tar.xz
-          sudo tar --strip-components=1 -xf archlinux-latest.tar.xz -C /tmp
+          sudo tar -xf archlinux-latest.tar.xz -C /tmp
 
           DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
           git clone https://github.com/Waim908/BCC BCC
