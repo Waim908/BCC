@@ -14,11 +14,17 @@ jobs:
   archlinux:
     runs-on: ubuntu-24.04-arm
     steps:
-      # 直接在 /tmp 下构建，避免污染 workspace
-      - name: Setting chroot from prebuilt rootfs
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update README wine latest update date
         run: |
-          cd /tmp
-          git clone https://github.com/Waim908/BCC BCC
+          TZ=Asia/Shanghai
+          DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
+          sed -i "s/^- Wine x86-64 BCC Latest Update:.*/- Wine x86-64 BCC Latest Update: ${DATE_STR}/" README.md
+          # git clone https://github.com/Waim908/BCC BCC
 
           # 下载 README 中的 Archlinux Rootfs
           wget -O archlinux-latest.tar.xz https://github.com/Waim908/BCC/releases/download/archlinux-latest/archlinux-latest.tar.xz
@@ -55,3 +61,13 @@ jobs:
           files: /tmp/wine-bcc.tar.xz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit README wine latest update date
+        if: success()
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -am "chore: update Wine x86-64 BCC latest date"
+            git push
+          fi
