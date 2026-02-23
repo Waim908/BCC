@@ -22,4 +22,4 @@ sudo chroot "$rootfsPath" /bin/pacman -Syu --noconfirm || exit 1
 # 退出后卸载
 bash BCC/mount.sh unmount "$rootfsPath"
 
-tar -I "xz -T$(nproc)" -cf /tmp/archlinux-latest.tar.xz archlinux || exit 1
+sudo tar -I "xz -T$(nproc)" -cf /tmp/archlinux-latest.tar.xz archlinux || exit 1
