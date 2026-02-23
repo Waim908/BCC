@@ -33,8 +33,8 @@ jobs:
           mkdir archlinux
           sudo tar --strip-components=1 -xf archlinux-latest.tar.xz -C archlinux
 
-          cp /tmp/BCC/Wine_x86-64-bcc.sh /tmp
-          cp /tmp/BCC/mount.sh /tmp
+          cp $GITHUB_WORKSPACE/BCC/Wine_x86-64-bcc.sh /tmp
+          cp $GITHUB_WORKSPACE/BCC/mount.sh /tmp
 
           cd /tmp
           bash mount.sh mount archlinux
