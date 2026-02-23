@@ -1,4 +1,4 @@
-name: Gstreamer Base Build Contaienr ARM64
+name: Archlinux Rootfs
 
 permissions:
   contents: write
