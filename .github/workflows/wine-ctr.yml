@@ -31,7 +31,7 @@ jobs:
 
           # 解包为 archlinux 目录
           mkdir archlinux
-          sudo tar -I 'xz -T$(nproc)' -xvf archlinux-latest.tar.xz -C archlinux --strip-components=1
+          sudo tar --strip-components=1 -xf archlinux-latest.tar.xz -C archlinux
 
           cp /tmp/BCC/Wine_x86-64-bcc.sh /tmp
           cp /tmp/BCC/mount.sh /tmp
