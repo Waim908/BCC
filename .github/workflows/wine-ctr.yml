@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update README wine latest update date
+      - name: Update README wine latest update date & Install depends
         run: |
           TZ=Asia/Shanghai
 
@@ -28,11 +28,10 @@ jobs:
           sudo tar -xf archlinux-latest.tar.xz -C /tmp
 
           DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
-          git clone https://github.com/Waim908/BCC BCC
-          sed -i "s/^- Wine x86-64 BCC Latest Update:.*/- Wine x86-64 BCC Latest Update: ${DATE_STR}/" BCC/README.md
-          sudo chmod 777 BCC/Wine_x86-64-bcc.sh
-          sudo cp -r BCC/Wine_x86-64-bcc.sh /tmp/archlinux/bin/
-          sudo cp BCC/mount.sh /tmp/
+          sed -i "s/^- Wine x86-64 BCC Latest Update:.*/- Wine x86-64 BCC Latest Update: ${DATE_STR}/" README.md
+          sudo chmod 777 Wine_x86-64-bcc.sh
+          sudo cp -r Wine_x86-64-bcc.sh /tmp/archlinux/bin/
+          sudo cp mount.sh /tmp/
 
           cd /tmp
           bash mount.sh mount archlinux
