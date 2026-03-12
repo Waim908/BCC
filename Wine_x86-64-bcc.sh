@@ -9,4 +9,5 @@ base-devel
 pacman -Syu --noconfirm
 pacman-key --init
 pacman -S --noconfirm --needed ${allPkg[@]}
+pacman -Scc --noconfirm
 exit 0
