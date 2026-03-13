@@ -10,4 +10,6 @@ pacman -Syu --noconfirm
 pacman-key --init
 pacman -S --noconfirm --needed ${allPkg[@]}
 pacman -Scc --noconfirm
+sed -i 's/^#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
+locale-gen
 exit 0
