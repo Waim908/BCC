@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       rootfs_url:
-        description: "自定义 Arch Linux bootstrap URL（可留空使用默认）"
+        description: "自定义 ubuntu base rootfs URL（可留空使用默认）"
         required: false
         default: ""
 
