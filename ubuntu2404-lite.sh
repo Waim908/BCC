@@ -32,7 +32,4 @@ sudo chroot "$rootfsPath" /bin/bash -c "yes | apt clean" || true
 # 退出后卸载
 bash mount.sh unmount "$rootfsPath"
 
-# 打包前清理 rootfs 内的缓存，减小体积
-sudo rm -rf "$rootfsPath/var/cache/pacman/pkg" "$rootfsPath/var/lib/pacman/sync"
-
 sudo tar -I "xz -T$(nproc) -9" -cf /tmp/ubuntu2404-latest.tar.xz ubuntu2404 || exit 1
