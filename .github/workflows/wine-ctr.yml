@@ -6,25 +6,17 @@ permissions:
 
 on:
   workflow_dispatch:
-  schedule:
-    # 北京时间每周日 01:00，对应 UTC 周六 17:00
-    - cron: "0 17 * * 6"
 
 jobs:
   archlinux:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Update README wine latest update date & Install depends
         run: |
           TZ=Asia/Shanghai
 
           # 下载 README 中的 Archlinux Rootfs
-          wget -O archlinux-latest.tar.xz https://github.com/Waim908/BCC/releases/download/archlinux-latest/archlinux-latest.tar.xz
+          wget -O https://github.com/Waim908/BCC/releases/download/ubuntu2404-latest/ubuntu2404-latest.tar.xz
           sudo tar -xf archlinux-latest.tar.xz -C /tmp
 
           DATE_STR=$(TZ=$TZ date '+%Y-%m-%d %H:%M:%S %Z')
