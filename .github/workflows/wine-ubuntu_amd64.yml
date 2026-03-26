@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  archlinux:
+  ubuntu:
     runs-on: ubuntu-24.04
     steps:
       - name: Update README wine latest update date & Install depends
@@ -21,13 +21,13 @@ jobs:
 
           git clone --depth=1 https://github.com/Waim908/BCC.git
 
-          sudo chmod 777 BCC/Wine-ubuntu_x86-64-bcc.sh
-          sudo cp -r BCC/Wine-ubuntu_x86-64-bcc.sh /tmp/ubuntu2404/bin/
+          sudo chmod 777 BCC/Wine-ubuntu2404_x86-64-bcc.sh
+          sudo cp -r BCC/Wine-ubuntu2404_x86-64-bcc.sh /tmp/ubuntu2404/bin/
           sudo cp mount.sh /tmp/
 
           cd /tmp
           bash mount.sh mount ubuntu2404
-          sudo chroot ubuntu2404 /bin/Wine-ubuntu_x86-64-bcc.sh
+          sudo chroot ubuntu2404 /bin/Wine-ubuntu2404_x86-64-bcc.sh
           cd /tmp
           bash mount.sh unmount ubuntu2404
 
