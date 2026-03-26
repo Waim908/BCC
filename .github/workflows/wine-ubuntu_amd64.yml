@@ -23,7 +23,7 @@ jobs:
 
           sudo chmod 777 BCC/Wine-ubuntu2404_x86-64-bcc.sh
           sudo cp -r BCC/Wine-ubuntu2404_x86-64-bcc.sh /tmp/ubuntu2404/bin/
-          sudo cp mount.sh /tmp/
+          sudo cp BCC/mount.sh /tmp/
 
           cd /tmp
           bash mount.sh mount ubuntu2404
