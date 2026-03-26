@@ -11,19 +11,15 @@ jobs:
   archlinux:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Update README wine latest update date & Install depends
         run: |
           TZ=Asia/Shanghai
           #sudo apt install -y aria2
-          git clone --depth=1 https://github.com/Waim908/BCC.git
           # 下载 README 中的 Archlinux Rootfs
           aria2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/ubuntu2404-latest/ubuntu2404-latest.tar.xz
           sudo tar -xf ubuntu2404-latest.tar.xz -C /tmp
+
+          git clone --depth=1 https://github.com/Waim908/BCC.git
 
           sudo chmod 777 BCC/Wine-ubuntu_x86-64-bcc.sh
           sudo cp -r BCC/Wine-ubuntu_x86-64-bcc.sh /tmp/ubuntu2404/bin/
