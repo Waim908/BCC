@@ -19,10 +19,10 @@ jobs:
       - name: Update README wine latest update date & Install depends
         run: |
           TZ=Asia/Shanghai
-          sudo apt install -y aria2
+          #sudo apt install -y aria2
           git clone --depth=1 https://github.com/Waim908/BCC.git
           # 下载 README 中的 Archlinux Rootfs
-          aira2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/ubuntu2404-latest/ubuntu2404-latest.tar.xz
+          aria2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/ubuntu2404-latest/ubuntu2404-latest.tar.xz
           sudo tar -xf ubuntu2404-latest.tar.xz -C /tmp
 
           sudo chmod 777 BCC/Wine-ubuntu_x86-64-bcc.sh
