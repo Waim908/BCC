@@ -1,4 +1,4 @@
-name: Wine x86-64 Build Container Ubuntu 24.04
+name: Wine Arm64ec Build Container Ubuntu 24.04
 
 permissions:
   contents: write
