@@ -1,0 +1,49 @@
+name: Wine x86-64 Build Container Ubuntu 24.04
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Update README wine latest update date & Install depends
+        run: |
+          TZ=Asia/Shanghai
+          #sudo apt install -y aria2
+          # 下载 README 中的 Archlinux Rootfs
+          aria2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/ubuntu2404-latest/ubuntu2404-latest.tar.xz
+          sudo tar -xf ubuntu2404-latest.tar.xz -C /tmp
+
+          git clone --depth=1 https://github.com/Waim908/BCC.git
+
+          sudo chmod 777 BCC/WineArm64ec-ubuntu2404_x86-64-bcc.sh
+          sudo cp -r BCC/WineArm64ec-ubuntu2404_x86-64-bcc.sh /tmp/ubuntu2404/bin/
+          sudo cp BCC/mount.sh /tmp/
+
+          cd /tmp
+          bash mount.sh mount ubuntu2404
+          sudo chroot ubuntu2404 /bin/WineArm64ec-ubuntu2404_x86-64-bcc.sh
+          cd /tmp
+          bash mount.sh unmount ubuntu2404
+
+      - name: Package
+        run: |
+          cd /tmp
+          sudo tar -I 'xz -T$(nproc) -9' -cvf wine-ubuntu2404-bcc-arm64ec.tar.xz ubuntu2404
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Wine x86-64 BCC Ubuntu 24.04
+          draft: false
+          prerelease: false
+          tag_name: wine-arm64ec-ubuntu2404-bcc-latest
+          body: |
+            Wine x86-64 BCC rootfs for Ubuntu 24.04
+          files: /tmp/wine-ubuntu2404-bcc-arm64ec.tar.xz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
