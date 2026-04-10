@@ -27,6 +27,8 @@ allPkg=(
   glslang
   cmake
   patchelf
+
+  ccache
 )
 pacman -Syu --noconfirm
 pacman-key --init
