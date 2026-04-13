@@ -25,7 +25,7 @@ jobs:
           cd /tmp
           git clone https://github.com/Waim908/BCC BCC
           aria2c -s16 -x16 https://github.com/Waim908/BCC/releases/download/archlinux-latest/archlinux-latest.tar.xz
-          tar xf archlinux-latest.tar.xz
+          sudo tar xf archlinux-latest.tar.xz
           sudo cp /tmp/BCC/Wlt-bcc.sh /tmp/archlinux/tmp
           cp /tmp/BCC/mount.sh /tmp
           bash mount.sh mount archlinux
