@@ -4,7 +4,7 @@ rootfsURL="${ROOTFS_URL:-https://mirror.adectra.com/archlinux/iso/2026.02.01/arc
 wget -O rootfs.tar.zst "$rootfsURL"
 rootfsPath="$GITHUB_WORKSPACE/archlinux"
 mkdir "$rootfsPath"
-sudo tar --strip-components=1 -xf rootfs.tar.zst -C "$rootfsPath" && rm -rf rootfs.tar.zst
+sudo tar --strip-components=1 -xf rootfs.pkg -C "$rootfsPath" && rm -rf rootfs.pkg
 
 sudo cp -r /etc/hostname "$rootfsPath/etc/hostname"
 sudo cp -r /etc/hosts "$rootfsPath/etc/hosts"
