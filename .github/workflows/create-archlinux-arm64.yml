@@ -28,6 +28,11 @@ jobs:
         env:
           ROOTFS_URL: ${{ github.event.inputs.rootfs_url }}
         run: |
+          # 创建 Arch Linux ARM 专用的 mirrorlist
+          cat > mirrorlist << 'EOF'
+          # Arch Linux ARM mirrors
+          Server = http://os.archlinuxarm.org/os/$arch/$repo
+          EOF
           bash -x arch-lite.sh ${{ env.ROOTFS_URL }} || exit 1
 
       - name: Release
