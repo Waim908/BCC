@@ -1,7 +1,7 @@
 rootfsURL="${ROOTFS_URL:-https://mirror.adectra.com/archlinux/iso/2026.02.01/archlinux-bootstrap-2026.02.01-x86_64.tar.zst}"
 
 # default: GITHUB_WORKSPACE
-wget -O rootfs.tar.zst "$rootfsURL"
+wget -O rootfs.pkg "$rootfsURL"
 rootfsPath="$GITHUB_WORKSPACE/archlinux"
 mkdir "$rootfsPath"
 sudo tar --strip-components=1 -xf rootfs.pkg -C "$rootfsPath" && rm -rf rootfs.pkg
