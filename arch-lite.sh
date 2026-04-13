@@ -16,18 +16,18 @@ sudo cp "$rootfsPath/etc/resolv.conf" "$rootfsPath/etc/resolv.conf.backup"
 
 # GitHub Actions 的宿主机通常使用 systemd-resolved，
 # /etc/resolv.conf 里是 127.0.0.53，chroot 里用不了，强制改成公共 DNS
-sudo bash -c "cat > '$rootfsPath/etc/resolv.conf' << 'EOF'
+sudo sudo > $rootfsPath/etc/resolv.conf << EOF
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 nameserver 1.1.1.1
-EOF"
+EOF
 
 # 写入 pacman 镜像源列表
 sudo mkdir -p "$rootfsPath/etc/pacman.d"
 # 检测是否为 Arch Linux ARM（通过检查是否存在 alarm 仓库配置）
 if [ -f "$rootfsPath/etc/pacman.d/mirrorlist-arm" ] || echo "$rootfsURL" | grep -qi "archlinuxarm"; then
   echo "Detected Arch Linux ARM, using ARM mirrors..."
-  sudo tee "$rootfsPath/etc/pacman.d/mirrorlist" << 'EOF'
+  sudo tee $rootfsPath/etc/pacman.d/mirrorlist << 'EOF'
 # Arch Linux ARM mirrors
 Server = http://os.archlinuxarm.org/os/$arch/$repo
 EOF
@@ -43,11 +43,6 @@ bash mount.sh mount "$rootfsPath"
 sudo sed -i 's/^DownloadUser/#DownloadUser/' "$rootfsPath/etc/pacman.conf" || true
 sudo sed -i "s/^[[:space:]]*\\(CheckSpace\\)/# \\1/" "$rootfsPath/etc/pacman.conf" || true
 sudo sed -i "s/^[[:space:]]*SigLevel[[:space:]]*=.*$/SigLevel = Never/" "$rootfsPath/etc/pacman.conf" || true
-
-# 测试 chroot 内的网络连接
-echo "Testing network in chroot..."
-sudo chroot "$rootfsPath" /bin/cat /etc/resolv.conf
-sudo chroot "$rootfsPath" /bin/ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
 
 # 在 chroot 内更新系统
 sudo chroot "$rootfsPath" /bin/pacman -Syu --noconfirm || exit 1
