@@ -16,7 +16,7 @@ sudo cp "$rootfsPath/etc/resolv.conf" "$rootfsPath/etc/resolv.conf.backup"
 
 # GitHub Actions 的宿主机通常使用 systemd-resolved，
 # /etc/resolv.conf 里是 127.0.0.53，chroot 里用不了，强制改成公共 DNS
-sudo sudo > $rootfsPath/etc/resolv.conf << EOF
+sudo cat > $rootfsPath/etc/resolv.conf << EOF
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 nameserver 1.1.1.1
