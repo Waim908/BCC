@@ -29,7 +29,6 @@ jobs:
           sudo cp /tmp/BCC/Wlt-bcc.sh /tmp/archlinux/tmp
           cp /tmp/BCC/mount.sh /tmp
           bash mount.sh mount archlinux
-          sudo cp Wlt-bcc.sh archlinux/bin/
           sudo chroot archlinux bash -x /tmp/Wlt-bcc.sh || exit 1
           cd /tmp
           bash mount.sh unmount archlinux
