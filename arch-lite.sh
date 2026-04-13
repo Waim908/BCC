@@ -16,7 +16,7 @@ sudo cp "$rootfsPath/etc/resolv.conf" "$rootfsPath/etc/resolv.conf.backup"
 
 # GitHub Actions 的宿主机通常使用 systemd-resolved，
 # /etc/resolv.conf 里是 127.0.0.53，chroot 里用不了，强制改成公共 DNS
-cat << EOF | sudo tee "$rootfsPath/etc/resolv.conf" > /dev/null
+sudo tee /home/runner/work/BCC/BCC/archlinux/etc/resolv.conf <<EOF
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 nameserver 1.1.1.1
@@ -29,7 +29,11 @@ if [ -f "$rootfsPath/etc/pacman.d/mirrorlist-arm" ] || echo "$rootfsURL" | grep 
   echo "Detected Arch Linux ARM, using ARM mirrors..."
   sudo tee $rootfsPath/etc/pacman.d/mirrorlist << 'EOF'
 # Arch Linux ARM mirrors
-Server = http://os.archlinuxarm.org/os/$arch/$repo
+Server = http://mirror.archlinuxarm.org/$arch/$repo
+Server = http://eu.mirror.archlinuxarm.org/$arch/$repo
+Server = http://us.mirror.archlinuxarm.org/$arch/$repo
+Server = http://dk.mirror.archlinuxarm.org/$arch/$repo
+Server = http://de.mirror.archlinuxarm.org/$arch/$repo
 EOF
 else
   sudo tee "$rootfsPath/etc/pacman.d/mirrorlist" < mirrorlist >/dev/null
