@@ -33,7 +33,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Arch Linux
+          name: Arch Linux arm64
           draft: false
           prerelease: false
           tag_name: archlinuxarm-latest
