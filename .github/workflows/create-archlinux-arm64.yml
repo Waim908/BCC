@@ -1,4 +1,4 @@
-name: Archlinux Rootfs
+name: Archlinux Rootfs (arm64)
 
 permissions:
   contents: write
