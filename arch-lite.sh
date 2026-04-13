@@ -1,10 +1,11 @@
 rootfsURL="${ROOTFS_URL:-https://mirror.adectra.com/archlinux/iso/2026.02.01/archlinux-bootstrap-2026.02.01-x86_64.tar.zst}"
 
 # default: GITHUB_WORKSPACE
-aria2c -s16 -x16 -O rootfs.pkg "$rootfsURL"
+aria2c -s16 -x16 "$rootfsURL" || exit 1
 rootfsPath="$GITHUB_WORKSPACE/archlinux"
 mkdir "$rootfsPath"
-sudo tar --strip-components=1 -xf rootfs.pkg -C "$rootfsPath" && rm -rf rootfs.pkg
+pkgName=$(basename $rootfsURL)
+sudo tar --strip-components=1 -xf $pkgName -C "$rootfsPath" && rm -rf $pkgName
 
 sudo cp -r /etc/hostname "$rootfsPath/etc/hostname"
 sudo cp -r /etc/hosts "$rootfsPath/etc/hosts"
